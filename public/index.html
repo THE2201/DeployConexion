@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Conexion Juvenil</title>
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png" />
+    <link rel="manifest" href="site.webmanifest" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script
+      src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"
+      defer
+    ></script>
+    <script>
+      tailwind.config = {
+        darkMode: "media",
+      };
+    </script>
+
+    <style>
+      html {
+        scroll-behavior: smooth;
+      }
+
+      /* Fira Sans */
+      @font-face {
+        font-family: "Fira Sans";
+        src: url("components/Fonts/Fira_Sans/FiraSans-Black.ttf")
+          format("truetype");
+        font-weight: normal;
+        font-style: normal;
+      }
+
+      /* Jost */
+      @font-face {
+        font-family: "Jost";
+        src: url("components/Fonts/Jost.ttf") format("truetype");
+        font-weight: normal;
+        font-style: normal;
+      }
+
+      /* Pacifico */
+      @font-face {
+        font-family: "Pacifico";
+        src: url("components/Fonts/Pacifico.ttf") format("truetype");
+        font-weight: normal;
+        font-style: normal;
+      }
+
+      /* DMSerif */
+      @font-face {
+        font-family: "DM Serif Display";
+        src: url("/components/Fonts/DM-Serif/DMSerifDisplay-Regular.ttf")
+          format("truetype");
+        font-weight: normal;
+        font-style: normal;
+      }
+
+      .fira {
+        font-family: "Fira Sans", sans-serif;
+      }
+      .jost {
+        font-family: "Jost", sans-serif;
+      }
+      .pacifico {
+        font-family: "Pacifico", cursive;
+      }
+      .dms {
+        font-family: "DM Serif Display", serif;
+      }
+    </style>
+  </head>
+  <body
+    class="bg-white text-gray-800 dark:bg-gray-900 dark:text-gray-100"
+    x-data="scrollSpy()"
+    x-init="init()"
+    @scroll.window="onScroll"
+  >
+    <!-- Navbar -->
+    <header
+      x-data="{ scrolled: false }"
+      x-init="
+    scrolled = window.scrollY > 10;
+    window.addEventListener('scroll', () => {
+      scrolled = window.scrollY > 10;
+    });
+  "
+      :class="{
+    'py-8 bg-white dark:bg-gray-900': !scrolled,
+    'py-4 bg-white dark:bg-gray-900 shadow': scrolled
+  }"
+      class="fixed top-0 w-full z-50 transition-all duration-300 ease-in-out fira"
+    >
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div
+          class="flex justify-between items-center transition-all duration-300 ease-in-out"
+        >
+          <div
+            class="text-2xl active:scale-90 transition-all duration-300 ease-in-out"
+          >
+            <a
+              class="flex text-yellow-500 hover:text-yellow-700 transition"
+              href="#Inicio"
+            >
+              <?xml version="1.0" encoding="UTF-8"?>
+              <svg
+                width="10%"
+                version="1.1"
+                class="bg-white rounded p-1 me-2"
+                viewBox="0 0 667 375"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="m265.08 262.72c0.39163-0.48685 0.78329-0.97369 1.6795-1.6613 0.75037-0.51077 0.99618-0.82074 1.242-1.1307 0 0-0.011322 0.068023 0.30841 0.010528 1.0925-1.3703 1.8652-2.6831 2.638-3.9959 0 0 0.046417 0.045242 0.30173-0.063461 0.44714-0.46123 0.63901-0.81375 0.83087-1.1663 0 0-0.016387-0.23424 0.33923-0.4926 0.79318-0.99919 1.2308-1.74 1.6684-2.4808-0.012329-0.259 0.093597-0.45366 0.85806-0.70482 1.0761-1.1759 1.6119-2.231 2.1476-3.2861-0.007569-0.2728 0.10757-0.47614 1.011-0.6306 4.3256-0.050842 7.9857-0.11951 11.646-0.1039 9.4759 0.040436 9.4731 0.055908 11.605 9.2247 0.07193 0.30951 0.31912 0.57825 0.48462 0.866 0.71237 3.9716 1.5643 7.9241 2.1132 11.918 2.4622 17.916 5.835 35.54 15.67 51.196 0.16223 0.25827 0.1936 0.59876 0.51566 1.6513-5.8078 4.5722-11.507 9.8121-17.916 13.953-14.889 9.6198-31.002 16.774-48.33 20.672-9.195 2.0687-18.606 3.3054-27.978 4.4353-21.183 2.554-41.634-1.5652-61.656-7.9277-17.167-5.4553-32.966-13.925-46.818-25.394-14.178-11.738-27.02-24.868-36.28-41.089-4.7019-8.2367-10.603-15.906-14.371-24.527-4.1786-9.561-7.4837-19.734-9.4534-29.971-2.3734-12.334-3.4557-24.988-4.1465-37.556-0.6952-12.648 2.635-24.917 5.0723-37.285 2.8918-14.673 9.1947-27.978 14.992-41.492 2.1456-5.0017 5.6072-9.5027 8.8518-13.953 3.9664-5.4397 7.8393-11.097 12.635-15.751 9.6697-9.3826 19.266-19.087 30.161-26.885 9.2986-6.6552 20.048-11.657 30.754-15.868 10.698-4.2077 22.064-6.835 33.286-9.5383 5.3708-1.2938 11.085-1.1591 16.644-1.6775 3.596-0.33536 7.1944-0.9882 10.786-0.94822 4.8689 0.054201 9.7702 0.36678 14.589 1.052 7.7147 1.097 15.41 2.4078 23.046 3.9598 11.649 2.3677 22.803 6.2215 32.99 12.469 9.0669 5.5605 18.627 10.552 26.862 17.172 9.5645 7.6885 18.491 16.37 26.667 25.538 11.308 12.681 19.351 27.577 25.658 43.354 1.0934 2.7352 2.2465 5.5591 2.5753 8.4332 0.13574 1.1865-1.7105 3.6124-2.8607 3.7494-3.9421 0.46945-7.9753 0.17438-12.779-0.13243-17.645-0.39377-34.485-0.49194-51.325-0.54332-0.60086-0.001831-1.2032 0.45912-1.8048 0.70438-6.3257 0.053451-12.667 0.36308-18.969 0.008591-1.9616-0.11032-4.6692-1.541-5.5938-3.1802-6.9399-12.305-16.963-21.42-29.216-27.904-15.596-8.2541-32.072-10.59-49.012-4.3111-7.242 2.6842-15.284 4.7801-21.055 9.484-7.9952 6.5173-14.86 14.753-20.989 23.144-7.7489 10.607-11.204 23.21-13.162 36.15-4.1659 27.536 0.88048 52.491 18.297 75.119 9.8194 12.758 21.839 21.573 36.514 26.709 6.7465 2.3613 14.713 3.7729 21.616 2.6032 12.947-2.194 26.196-4.7745 36.888-13.663 2.3676-1.968 5.0473-3.5606 8.0373-5.7499 0.88159-1.1209 1.3091-1.8181 1.7365-2.5152z"
+                  fill="#FEA303"
+                />
+                <path
+                  d="m407.83 253.01c1.1677 11.143 4.1068 21.273 14.399 27.79 13.487 8.5389 30.817 5.4226 41.292-4.0316 2.9725-2.6827 4.5537-6.907 7.3673-10.828 1.4318-3.8949 2.9511-7.3778 2.9934-10.879 0.23489-19.443 0.13727-38.89 0.069336-58.335-0.006775-1.9356-0.58057-3.8693-0.95349-5.9513-0.062348-0.14738-0.11154-0.46362-0.12085-0.79372-0.56155-0.96967-1.1138-1.6092-1.6671-2.2488 0 1.5e-5 -0.12988-0.23517-0.2417-0.64142-0.41736-0.63069-0.72293-0.85515-1.0285-1.0796 0 0 0.060608-0.004669-0.082397-0.3432-2.1702-0.7928-4.1946-1.6254-6.2252-1.6409-14.968-0.11468-29.937-0.053054-44.906-0.073623-11.397-0.015656-11.39-0.032761-10.871-11.248 0.069122-1.494 0.028626-2.9933 0.029083-4.4901 0.005494-17.131 0.14377-34.264-0.075683-51.392-0.059448-4.6385 1.4976-6.0015 6.0467-5.9256 14.632 0.24417 29.271 0.12206 43.907 0.049271 2.1141-0.010506 4.2257-0.52518 6.5551-0.92631 0.4967-0.30526 0.7344-0.53456 0.92984-0.80766 2.8405-0.70888 5.3607-1.8113 6.7623-5.4908 0.76135-1.7766 1.0696-3.082 1.0708-4.3876 0.01889-21.425-9.77e-4 -42.849 0.1171-64.64 0.38409-3.8724 2.8256-3.8974 5.4852-3.8945 15.058 0.016645 30.116-0.039761 45.174-0.071291 8.4453-0.22867 16.891-0.45734 25.887-0.3435 2.4722 0.42453 4.3937 0.50655 6.3151 0.58857 0 0-0.055176 0.025448-0.097351 0.46729-0.042481 22.438-0.064087 44.434-0.002564 66.43 0.004944 1.7716 0.5813 3.5416 0.89209 5.3123 1.4797 1.8703 2.9594 3.7405 5.1132 5.9993 2.484 0.53043 4.2935 0.78991 6.1039 0.79566 14.773 0.046852 29.547 0.052711 44.321 0.058067 10.582 0.00383 10.486-0.003868 10.621 10.778 0.092956 7.4252 0.49823 14.846 0.81427 22.729 0.09729 8.7864 0.14429 17.114-0.052735 25.772-0.43646 2.636-0.72949 4.9371-0.80212 7.245-0.21002 6.6759-0.8482 7.3694-7.551 7.382-16.491 0.031021-32.982-0.006103-49.472 0.077027-2.7 0.01361-5.9212-0.63455-6.9797 3.1862-0.33545 0.72839-0.6709 1.4568-1.2474 2.6471-0.44525 0.69388-0.60907 0.95149-0.7326 1.2348 0 0-0.013611-0.10664-0.2467 0.19743-0.42523 2.2735-0.77661 4.2422-0.784 6.2123-0.054383 14.49 0.07611 28.981-0.087586 43.469-0.11078 9.8048-0.6225 19.605-0.91803 29.408-0.098327 3.262-0.08197 6.5275-0.11804 9.7914-2.4117 13.243-7.3763 25.36-15.604 36.115-9.6541 12.62-20.007 24.042-34.845 31.275-12.109 5.9024-23.954 11.361-37.668 11.489-1.912 0.017883-3.8189 0.59528-6.6305 0.86389-12.712-0.046326-24.522-0.042908-36.333-0.03949-13.588-0.44678-26.443-3.1396-38.925-9.168-10.159-4.9069-19.488-10.742-27.526-18.357-12.177-11.535-20.766-25.521-25.277-41.831-0.25604-0.92572-0.63248-1.8181-0.70804-3.4168 0.15817-1.9868 0.11951-3.2881-0.022674-4.5781-1.0879-9.8698-2.2698-19.73-3.2635-29.609-0.43195-4.2942 1.9542-5.8706 6.0732-5.8583 22.464 0.067032 44.929 0.044067 67.394 0.011474 2.6129-0.003799 4.602 0.40596 4.7384 3.6615 0.032806 0.78268 1.0362 1.5247 1.5932 2.2854z"
+                  fill="#FEA302"
+                />
+              </svg>
+              Conexion Juvenil</a
+            >
+          </div>
+          <nav class="hidden md:flex space-x-6">
+            <template x-for="link in links" :key="link.id">
+              <a
+                :href="`#${link.id}`"
+                :class="activeSection === link.id ? 'text-yellow-500 font-semibold' : 'hover:text-gray-400'"
+                class="transition-colors duration-300"
+              >
+                <span x-text="link.label"></span>
+              </a>
+            </template>
+          </nav>
+          <!-- Mobile Menu -->
+          <div class="md:hidden" x-data="{ open: false }">
+            <button
+              @click="open = !open"
+              class="focus:outline-none relative w-6 h-6"
+            >
+              <!-- Hamburger Icon -->
+              <svg
+                x-show="!open"
+                x-transition:enter="transition ease-out duration-200"
+                x-transition:enter-start="opacity-0 scale-75"
+                x-transition:enter-end="opacity-100 scale-100"
+                x-transition:leave="transition ease-in duration-150"
+                x-transition:leave-start="opacity-100 scale-100"
+                x-transition:leave-end="opacity-0 scale-75"
+                xmlns="http://www.w3.org/2000/svg"
+                class="absolute inset-0 h-6 w-6 text-yellow-500"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M4 6h16M4 12h16M4 18h16"
+                />
+              </svg>
+
+              <svg
+                x-show="open"
+                x-transition:enter="transition ease-out duration-200"
+                x-transition:enter-start="opacity-0 scale-75"
+                x-transition:enter-end="opacity-100 scale-100"
+                x-transition:leave="transition ease-in duration-150"
+                x-transition:leave-start="opacity-100 scale-100"
+                x-transition:leave-end="opacity-0 scale-75"
+                xmlns="http://www.w3.org/2000/svg"
+                class="absolute inset-0 h-6 w-6 text-yellow-500"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
+
+            <div
+              x-show="open"
+              x-transition:enter="transition ease-out duration-300"
+              x-transition:enter-start="opacity-0 transform -translate-y-4 scale-95"
+              x-transition:enter-end="opacity-100 transform translate-y-0 scale-100"
+              x-transition:leave="transition ease-in duration-200"
+              x-transition:leave-start="opacity-100 transform translate-y-0 scale-100"
+              x-transition:leave-end="opacity-0 transform -translate-y-4 scale-95"
+              @click.away="open = false"
+              class="absolute w-full bg-white dark:bg-gray-900 mt-4 p-8 right-0 rounded shadow-md flex flex-col space-y-4 text-right origin-top"
+            >
+              <a
+                href="#Inicio"
+                class="transition-transform duration-300 active:scale-90"
+                >Inicio</a
+              >
+              <a
+                href="#Nosotros"
+                class="transition-transform duration-300 active:scale-90"
+                >Nosotros</a
+              >
+              <a
+                href="#Galeria"
+                class="transition-transform duration-300 active:scale-90"
+                >Galeria</a
+              >
+              <a
+                href="#Donaciones"
+                class="transition-transform duration-300 active:scale-90"
+                >Donaciones</a
+              >
+              <a
+                href="#Visitanos"
+                class="transition-transform duration-300 active:scale-90"
+                >Visitanos</a
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Inicio / Hero Section -->
+    <section
+      id="Inicio"
+      x-data="carousel()"
+      x-init="start()"
+      x-bind:style="scrolled ? 'padding-top: 4rem' : 'padding-top: 6rem'"
+      class="fira min-h-screen relative"
+    >
+      <div class="absolute inset-0 z-0 overflow-hidden">
+        <template x-for="(image, index) in images" :key="index">
+          <div
+            x-show="currentIndex === index"
+            x-transition:enter="transition ease-out duration-700"
+            x-transition:enter-start="opacity-0 scale-95"
+            x-transition:enter-end="opacity-100 scale-100"
+            x-transition:leave="transition ease-in duration-500"
+            x-transition:leave-start="opacity-100 scale-100"
+            x-transition:leave-end="opacity-0 scale-95"
+            class="absolute inset-0 w-full h-full"
+          >
+            <img
+              :src="image"
+              alt="Galeria Image"
+              class="w-full h-full object-cover"
+            />
+          </div>
+        </template>
+
+        <div class="absolute top-0 left-0 w-full h-40 z-10 pointer-events-none">
+          <!-- Light mode gradient -->
+          <div
+            class="w-full h-full bg-gradient-to-b from-white/80 to-transparent dark:hidden"
+          ></div>
+          <!-- Dark mode gradient -->
+          <div
+            class="w-full h-full bg-gradient-to-b from-black/80 to-transparent hidden dark:block"
+          ></div>
+        </div>
+        <!-- doble para mejor vista -->
+        <div
+          class="absolute top-100 left-100 w-full h-40 z-10 pointer-events-none"
+        >
+          <!-- Light mode gradient -->
+          <div
+            class="w-full h-full bg-gradient-to-b from-white/80 to-transparent dark:hidden"
+          ></div>
+          <!-- Dark mode gradient -->
+          <div
+            class="w-full h-full bg-gradient-to-b from-black/80 to-transparent hidden dark:block"
+          ></div>
+        </div>
+      </div>
+
+      <div
+        class="absolute bottom-20 right-0 z-10 m-6 bg-black bg-opacity-60 text-white p-6 rounded-lg max-w-md text-right"
+      >
+        <h1 class="text-2xl md:text-3xl">Somos Conexion!</h1>
+        <p class="mt-2 text-sm md:text-base">
+          Grupo de jovenes con objetivos claros en el evangelio de Cristo,
+          prestos para la comunidad!
+        </p>
+      </div>
+    </section>
+
+    <!-- Nosotros Section -->
+   <section id="Nosotros" class="dms py-20 bg-gray-50 dark:bg-neutral-900 p-4">
+  <div class="flex flex-col lg:flex-row items-center lg:items-center justify-between gap-8">
+
+    <div class="w-full lg:w-1/2 p-4">
+      <img
+        src="../public/images/Optimus/landcamp.jpg"
+        class="rounded shadow object-contain h-full w-full"
+        alt="Gallery 1"
+      />
+    </div>
+    <!-- Text Section -->
+    <div class="w-full lg:w-1/2 p-4 text-center lg:text-center">
+      <h2 class="text-1xl font-semibold mb-0 text-green-500">Se Acerca</h2>
+      <h2 class="text-3xl font-semibold mb-4">MoodCamp 2025</h2>
+
+      <p class="text-lg text-gray-600 dark:text-gray-300">
+        MoodCamp 2025 se aproxima. Recarga tus baterías y prepárate para un
+        tiempo extraordinario junto a jóvenes como tú. Tendremos muchas
+        actividades al aire libre — será totalmente un reinicio. Un entorno
+        diferente, libre de juicios. ¡Conoce jóvenes y la palabra de Dios!
+        ¿Qué esperas? ¡Inscríbete!
+      </p>
+
+      <a
+        href="./pages/camp.html"
+        target="_blank"
+        class="inline-block bg-orange-600 font-bold text-white px-6 py-3 rounded transition duration-300 hover:bg-orange-700 hover:scale-105 m-5 active:scale-90"
+      >
+        Inscribirme para Mood Camp 2025
+      </a>
+    </div>
+
+    <!-- Image Section -->
+    
+  </div>
+</section>
+
+
+    <!-- Quienes Somos Section -->
+    <section id="whowe" class="dms py-5 bg-gray-50 dark:bg-neutral-900">
+      <div
+        class="relative overflow-hidden text-white p-6 bg-green-600 rounded ml-4 mr-4 sm:ml-8 sm:mr-8 md:ml-16 md:mr-16 lg:ml-24 lg:mr-24 xl:ml-32 xl:mr-32"
+      >
+        <!-- Green animated overlay as progress bar -->
+        <div
+          id="progressOverlay"
+          class="absolute top-0 left-0 h-full bg-green-500 opacity-50 z-0"
+          style="width: 0%; transition: width 10s linear"
+        ></div>
+
+        <!-- Heading in background -->
+        <h2
+          class="absolute inset-0 flex items-top justify-center text-6xl text-black opacity-90 z-0 pointer-events-none mt-10 mr-5 ml-5"
+        >
+          ¿Quienes Somos?
+        </h2>
+
+        <!-- Slider content in front -->
+        <div
+          id="slider"
+          class="flex relative z-10 transition-transform duration-700 ease-in-out opacity-80"
+        >
+          <div class="min-w-full flex justify-center items-center text-center">
+            <p class="text-lg m-5 font-bold">
+              Conexion Juvenil el grupo de jóvenes de Casa Apostólica Mar de
+              Galilea. Desde entonces nos dedicamos a recibir, evangelizar y
+              predicar la palabra de Dios desde un entorno juvenil.
+            </p>
+          </div>
+          <div class="min-w-full flex justify-center items-center text-center">
+            <p class="text-lg m-5 font-bold">
+              Nuestro objetivo principal es buscar recuperar jóvenes para
+              Cristo.
+            </p>
+          </div>
+          <div class="min-w-full flex justify-center items-center text-center">
+            <p class="text-lg m-5 font-bold">
+              Nuestra visión es llegar a tantos jóvenes como sea posible
+              mediante la palabra, la proyección social, inclusión y la
+              presteza.
+            </p>
+          </div>
+          <div class="min-w-full flex justify-center items-center text-center">
+            <p class="text-lg m-5 font-bold">
+              Estamos listos para apoyar si tienes una mision en tu comunidad o
+              ciudad!
+            </p>
+          </div>
+        </div>
+
+        <!-- Controls -->
+        <div class="flex justify-end mt-4 relative z-10">
+          <button
+            id="toggleBtn"
+            class="text-white px-4 py-2 rounded transition"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              class="size-6"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M14.25 9v6m-4.5 0V9M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+              />
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- JavaScript -->
+      <script>
+        const slider = document.getElementById("slider");
+        const progressOverlay = document.getElementById("progressOverlay");
+        const toggleBtn = document.getElementById("toggleBtn");
+
+        let currentIndex = 0;
+        const totalSlides = 4;
+        const slideDuration = 10000;
+        let paused = false;
+        let slideInterval;
+
+        function showSlide(index) {
+          slider.style.transform = `translateX(-${index * 100}%)`;
+          progressOverlay.style.transition = "none";
+          progressOverlay.style.width = "0%";
+          void progressOverlay.offsetWidth; // force reflow to reset transition
+          progressOverlay.style.transition = `width ${slideDuration}ms linear`;
+          progressOverlay.style.width = "100%";
+        }
+
+        function nextSlide() {
+          if (!paused) {
+            currentIndex = (currentIndex + 1) % totalSlides;
+            showSlide(currentIndex);
+          }
+        }
+
+        function startSlider() {
+          showSlide(currentIndex);
+          slideInterval = setInterval(nextSlide, slideDuration);
+        }
+
+        function pauseSlider() {
+          paused = true;
+          clearInterval(slideInterval);
+          progressOverlay.style.transition = "none";
+          toggleBtn.innerHTML = `
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15.91 11.672a.375.375 0 0 1 0 .656l-5.603 3.113a.375.375 0 0 1-.557-.328V8.887c0-.286.307-.466.557-.327l5.603 3.112Z" />
+        </svg>`;
+        }
+
+        function resumeSlider() {
+          paused = false;
+          toggleBtn.innerHTML = `
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M14.25 9v6m-4.5 0V9M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+        </svg>`;
+          showSlide(currentIndex);
+          slideInterval = setInterval(nextSlide, slideDuration);
+        }
+
+        toggleBtn.addEventListener("click", () => {
+          paused ? resumeSlider() : pauseSlider();
+        });
+
+        window.addEventListener("DOMContentLoaded", () => {
+          startSlider();
+        });
+      </script>
+    </section>
+
+    <!-- Fin Seccion Quiees Somos -->
+
+    <!-- Gallery Section -->
+    <section id="Galeria" class="fira py-20">
+      <div class="max-w-6xl mx-auto px-4 text-center">
+        <h2 class="text-3xl font-semibold mb-8">Galeria Conexion</h2>
+        <div
+          class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"
+        >
+          <img
+            src="./images/g7.jpg"
+            class="rounded shadow object-cover h-64 w-full"
+            alt="Gallery 1"
+          />
+          <img
+            src="./images/g1.jpg"
+            class="rounded shadow object-cover h-64 w-full"
+            alt="Gallery 2"
+          />
+          <img
+            src="./images/g3.jpg"
+            class="rounded shadow object-cover h-64 w-full"
+            alt="Gallery 3"
+          />
+
+          <!-- "See more" button tile -->
+          <div
+            class="flex items-center justify-start h-64 w-2/3 bg-gray-100 dark:bg-gray-800 rounded shadow"
+          >
+            <a
+              href="/pages/gallery.html"
+              class="inline-block h-full p-6 dark:text-white text-black hover:scale-95 transition text-lg"
+            >
+              Ver todo
+              <svg
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                class="size-6"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="m12.75 15 3-3m0 0-3-3m3 3h-7.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                />
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Join Section -->
+    <section id="Donaciones" class="jost py-20 bg-blue-50 dark:bg-blue-900">
+      <div class="max-w-4xl mx-auto px-4 text-center">
+        <h2 class="text-3xl font-semibold mb-4">Realizar una aportacion</h2>
+        <p class="mb-6 text-gray-700 dark:text-gray-200">
+          Estamos comprometidos a progresar para la obra de Dios, las
+          aportaciones o donativos nos ayudan en gran parte para alcanzar mayor
+          proyeccion para nuestras comunidades y a donde sea que vayamos!
+        </p>
+        <a
+          href="./pages/donations.html"
+          target="_self"
+          class="inline-block bg-blue-600 text-white px-6 py-3 rounded hover:bg-blue-700 transition"
+        >
+          Hacer aportacion!
+        </a>
+      </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="Visitanos" class="jost py-20 bg-gray-100 dark:bg-black">
+      <div
+        class="max-w-7xl mx-auto px-4 flex flex-col-reverse lg:flex-row items-center gap-8"
+      >
+        <!-- Visitanos Form -->
+        <div class="w-full lg:w-1/2">
+          <h2 class="text-3xl font-semibold text-right lg:text-right mb-6">
+            Mar de Galilea Siguatepeque
+          </h2>
+
+          <h2 class="text-2xl text-right lg:text-right mb-6 text-yellow-500">
+            Casa de Conexion Juvenil
+          </h2>
+
+          <h2 class="text-1 xl text-right lg:text-right mb-6 text-gray-400">
+            Carretera CA-5, 400 Metros hacia Barrio Calan, <br />
+            Siguatepeque Comayagua Honduras Centroamerica
+          </h2>
+          <a
+            href="#maps"
+            class="flex flex-row items-center text-center lg:text-right lg:justify-end bg-white text-black px-6 py-3 mb-6 rounded hover:bg-gray-500 transition"
+          >
+            <svg
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              class="size-6 mr-2"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
+              />
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z"
+              />
+            </svg>
+            Indicaciones Siguatepeque
+          </a>
+        </div>
+
+        <!-- Google Map -->
+        <div class="w-full lg:w-1/2">
+          <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d883.4627588171478!2d-87.83769983221985!3d14.573389160918563!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8f6595ea2afbd6c9%3A0x83fe0da764921220!2sCasa%20Apostolica%20Mar%20de%20Galilea!5e1!3m2!1ses-419!2shn!4v1749527456367!5m2!1ses-419!2shn"
+            width="100%"
+            height="450"
+            style="border: 0"
+            allowfullscreen=""
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+            class="rounded shadow"
+          ></iframe>
+        </div>
+      </div>
+
+      <div
+        class="max-w-7xl mx-auto px-4 flex flex-col lg:flex-row items-center gap-8 mt-5"
+      >
+        <!-- Map -->
+        <div class="w-full lg:w-1/2">
+          <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3611.863498801176!2d-87.6513593252093!3d14.462509386007623!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8f658fa85d40c539%3A0x798ecd2a13c36769!2sCasa%20Apostolica%20MAR%20DE%20GALILEA!5e1!3m2!1ses-419!2shn!4v1749529444192!5m2!1ses-419!2shn"
+            width="100%"
+            height="450"
+            style="border: 0"
+            allowfullscreen=""
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+            class="rounded shadow"
+          ></iframe>
+        </div>
+
+        <!-- Text Content -->
+        <div class="w-full lg:w-1/2">
+          <h2 class="text-3xl font-semibold text-left lg:text-left mb-6">
+            Mar de Galilea Comayagua
+          </h2>
+          <h2 class="text-2xl text-left lg:text-left mb-6 text-yellow-500">
+            Conexion Comayagua
+          </h2>
+          <h2 class="text-xl text-left lg:text-left mb-6 text-gray-400">
+            Comayagua, Comayagua Barrio Centro
+          </h2>
+          <a
+            href="#Visitanos"
+            class="flex flex-row items-center text-center lg:text-left bg-white text-black px-6 py-3 rounded hover:bg-gray-500 transition"
+          >
+            <svg
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              class="size-6 mr-2"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
+              />
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z"
+              />
+            </svg>
+
+            Indicaciones Comayagua
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <footer
+      class="bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-200 py-10 mt-16"
+    >
+      <div class="max-w-7xl mx-auto px-4 text-center">
+        <!-- Centered Logo SVG -->
+        <div class="mb-6 flex justify-center">
+          <?xml version="1.0" encoding="UTF-8"?>
+          <svg
+            width="10%"
+            version="1.1"
+            viewBox="0 0 667 375"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="m265.08 262.72c0.39163-0.48685 0.78329-0.97369 1.6795-1.6613 0.75037-0.51077 0.99618-0.82074 1.242-1.1307 0 0-0.011322 0.068023 0.30841 0.010528 1.0925-1.3703 1.8652-2.6831 2.638-3.9959 0 0 0.046417 0.045242 0.30173-0.063461 0.44714-0.46123 0.63901-0.81375 0.83087-1.1663 0 0-0.016387-0.23424 0.33923-0.4926 0.79318-0.99919 1.2308-1.74 1.6684-2.4808-0.012329-0.259 0.093597-0.45366 0.85806-0.70482 1.0761-1.1759 1.6119-2.231 2.1476-3.2861-0.007569-0.2728 0.10757-0.47614 1.011-0.6306 4.3256-0.050842 7.9857-0.11951 11.646-0.1039 9.4759 0.040436 9.4731 0.055908 11.605 9.2247 0.07193 0.30951 0.31912 0.57825 0.48462 0.866 0.71237 3.9716 1.5643 7.9241 2.1132 11.918 2.4622 17.916 5.835 35.54 15.67 51.196 0.16223 0.25827 0.1936 0.59876 0.51566 1.6513-5.8078 4.5722-11.507 9.8121-17.916 13.953-14.889 9.6198-31.002 16.774-48.33 20.672-9.195 2.0687-18.606 3.3054-27.978 4.4353-21.183 2.554-41.634-1.5652-61.656-7.9277-17.167-5.4553-32.966-13.925-46.818-25.394-14.178-11.738-27.02-24.868-36.28-41.089-4.7019-8.2367-10.603-15.906-14.371-24.527-4.1786-9.561-7.4837-19.734-9.4534-29.971-2.3734-12.334-3.4557-24.988-4.1465-37.556-0.6952-12.648 2.635-24.917 5.0723-37.285 2.8918-14.673 9.1947-27.978 14.992-41.492 2.1456-5.0017 5.6072-9.5027 8.8518-13.953 3.9664-5.4397 7.8393-11.097 12.635-15.751 9.6697-9.3826 19.266-19.087 30.161-26.885 9.2986-6.6552 20.048-11.657 30.754-15.868 10.698-4.2077 22.064-6.835 33.286-9.5383 5.3708-1.2938 11.085-1.1591 16.644-1.6775 3.596-0.33536 7.1944-0.9882 10.786-0.94822 4.8689 0.054201 9.7702 0.36678 14.589 1.052 7.7147 1.097 15.41 2.4078 23.046 3.9598 11.649 2.3677 22.803 6.2215 32.99 12.469 9.0669 5.5605 18.627 10.552 26.862 17.172 9.5645 7.6885 18.491 16.37 26.667 25.538 11.308 12.681 19.351 27.577 25.658 43.354 1.0934 2.7352 2.2465 5.5591 2.5753 8.4332 0.13574 1.1865-1.7105 3.6124-2.8607 3.7494-3.9421 0.46945-7.9753 0.17438-12.779-0.13243-17.645-0.39377-34.485-0.49194-51.325-0.54332-0.60086-0.001831-1.2032 0.45912-1.8048 0.70438-6.3257 0.053451-12.667 0.36308-18.969 0.008591-1.9616-0.11032-4.6692-1.541-5.5938-3.1802-6.9399-12.305-16.963-21.42-29.216-27.904-15.596-8.2541-32.072-10.59-49.012-4.3111-7.242 2.6842-15.284 4.7801-21.055 9.484-7.9952 6.5173-14.86 14.753-20.989 23.144-7.7489 10.607-11.204 23.21-13.162 36.15-4.1659 27.536 0.88048 52.491 18.297 75.119 9.8194 12.758 21.839 21.573 36.514 26.709 6.7465 2.3613 14.713 3.7729 21.616 2.6032 12.947-2.194 26.196-4.7745 36.888-13.663 2.3676-1.968 5.0473-3.5606 8.0373-5.7499 0.88159-1.1209 1.3091-1.8181 1.7365-2.5152z"
+              fill="#FEA303"
+            />
+            <path
+              d="m407.83 253.01c1.1677 11.143 4.1068 21.273 14.399 27.79 13.487 8.5389 30.817 5.4226 41.292-4.0316 2.9725-2.6827 4.5537-6.907 7.3673-10.828 1.4318-3.8949 2.9511-7.3778 2.9934-10.879 0.23489-19.443 0.13727-38.89 0.069336-58.335-0.006775-1.9356-0.58057-3.8693-0.95349-5.9513-0.062348-0.14738-0.11154-0.46362-0.12085-0.79372-0.56155-0.96967-1.1138-1.6092-1.6671-2.2488 0 1.5e-5 -0.12988-0.23517-0.2417-0.64142-0.41736-0.63069-0.72293-0.85515-1.0285-1.0796 0 0 0.060608-0.004669-0.082397-0.3432-2.1702-0.7928-4.1946-1.6254-6.2252-1.6409-14.968-0.11468-29.937-0.053054-44.906-0.073623-11.397-0.015656-11.39-0.032761-10.871-11.248 0.069122-1.494 0.028626-2.9933 0.029083-4.4901 0.005494-17.131 0.14377-34.264-0.075683-51.392-0.059448-4.6385 1.4976-6.0015 6.0467-5.9256 14.632 0.24417 29.271 0.12206 43.907 0.049271 2.1141-0.010506 4.2257-0.52518 6.5551-0.92631 0.4967-0.30526 0.7344-0.53456 0.92984-0.80766 2.8405-0.70888 5.3607-1.8113 6.7623-5.4908 0.76135-1.7766 1.0696-3.082 1.0708-4.3876 0.01889-21.425-9.77e-4 -42.849 0.1171-64.64 0.38409-3.8724 2.8256-3.8974 5.4852-3.8945 15.058 0.016645 30.116-0.039761 45.174-0.071291 8.4453-0.22867 16.891-0.45734 25.887-0.3435 2.4722 0.42453 4.3937 0.50655 6.3151 0.58857 0 0-0.055176 0.025448-0.097351 0.46729-0.042481 22.438-0.064087 44.434-0.002564 66.43 0.004944 1.7716 0.5813 3.5416 0.89209 5.3123 1.4797 1.8703 2.9594 3.7405 5.1132 5.9993 2.484 0.53043 4.2935 0.78991 6.1039 0.79566 14.773 0.046852 29.547 0.052711 44.321 0.058067 10.582 0.00383 10.486-0.003868 10.621 10.778 0.092956 7.4252 0.49823 14.846 0.81427 22.729 0.09729 8.7864 0.14429 17.114-0.052735 25.772-0.43646 2.636-0.72949 4.9371-0.80212 7.245-0.21002 6.6759-0.8482 7.3694-7.551 7.382-16.491 0.031021-32.982-0.006103-49.472 0.077027-2.7 0.01361-5.9212-0.63455-6.9797 3.1862-0.33545 0.72839-0.6709 1.4568-1.2474 2.6471-0.44525 0.69388-0.60907 0.95149-0.7326 1.2348 0 0-0.013611-0.10664-0.2467 0.19743-0.42523 2.2735-0.77661 4.2422-0.784 6.2123-0.054383 14.49 0.07611 28.981-0.087586 43.469-0.11078 9.8048-0.6225 19.605-0.91803 29.408-0.098327 3.262-0.08197 6.5275-0.11804 9.7914-2.4117 13.243-7.3763 25.36-15.604 36.115-9.6541 12.62-20.007 24.042-34.845 31.275-12.109 5.9024-23.954 11.361-37.668 11.489-1.912 0.017883-3.8189 0.59528-6.6305 0.86389-12.712-0.046326-24.522-0.042908-36.333-0.03949-13.588-0.44678-26.443-3.1396-38.925-9.168-10.159-4.9069-19.488-10.742-27.526-18.357-12.177-11.535-20.766-25.521-25.277-41.831-0.25604-0.92572-0.63248-1.8181-0.70804-3.4168 0.15817-1.9868 0.11951-3.2881-0.022674-4.5781-1.0879-9.8698-2.2698-19.73-3.2635-29.609-0.43195-4.2942 1.9542-5.8706 6.0732-5.8583 22.464 0.067032 44.929 0.044067 67.394 0.011474 2.6129-0.003799 4.602 0.40596 4.7384 3.6615 0.032806 0.78268 1.0362 1.5247 1.5932 2.2854z"
+              fill="#FEA302"
+            />
+          </svg>
+        </div>
+
+        <!-- Social Icons -->
+        <div class="flex justify-center space-x-6 mb-6">
+          <!-- Facebook -->
+          <a
+            href="https://www.facebook.com/conexionjuvenilhonduras"
+            target="_blank"
+          >
+            <?xml version="1.0" encoding="utf-8"?>
+            <!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
+            <svg
+              fill="orange"
+              class="h-6 w-6"
+              viewBox="0 0 32 32"
+              version="1.1"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <title>facebook</title>
+              <path
+                d="M30.996 16.091c-0.001-8.281-6.714-14.994-14.996-14.994s-14.996 6.714-14.996 14.996c0 7.455 5.44 13.639 12.566 14.8l0.086 0.012v-10.478h-3.808v-4.336h3.808v-3.302c-0.019-0.167-0.029-0.361-0.029-0.557 0-2.923 2.37-5.293 5.293-5.293 0.141 0 0.281 0.006 0.42 0.016l-0.018-0.001c1.199 0.017 2.359 0.123 3.491 0.312l-0.134-0.019v3.69h-1.892c-0.086-0.012-0.185-0.019-0.285-0.019-1.197 0-2.168 0.97-2.168 2.168 0 0.068 0.003 0.135 0.009 0.202l-0.001-0.009v2.812h4.159l-0.665 4.336h-3.494v10.478c7.213-1.174 12.653-7.359 12.654-14.814v-0z"
+              ></path>
+            </svg>
+          </a>
+
+          <!-- Instagram -->
+          <a
+            href="https://www.instagram.com/conexionjuvenilhn/"
+            target="_blank"
+          >
+            <?xml version="1.0" encoding="utf-8"?>
+            <svg
+              fill="orange"
+              class="h-6 w-6"
+              viewBox="0 0 32 32"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <title>Instagram</title>
+              <path
+                d="M20.445 5h-8.891A6.559 6.559 0 0 0 5 11.554v8.891A6.559 6.559 0 0 0 11.554 27h8.891a6.56 6.56 0 0 0 6.554-6.555v-8.891A6.557 6.557 0 0 0 20.445 5zm4.342 15.445a4.343 4.343 0 0 1-4.342 4.342h-8.891a4.341 4.341 0 0 1-4.341-4.342v-8.891a4.34 4.34 0 0 1 4.341-4.341h8.891a4.342 4.342 0 0 1 4.341 4.341l.001 8.891z"
+              />
+              <path
+                d="M16 10.312c-3.138 0-5.688 2.551-5.688 5.688s2.551 5.688 5.688 5.688 5.688-2.551 5.688-5.688-2.55-5.688-5.688-5.688zm0 9.163a3.475 3.475 0 1 1-.001-6.95 3.475 3.475 0 0 1 .001 6.95zM21.7 8.991a1.363 1.363 0 1 1-1.364 1.364c0-.752.51-1.364 1.364-1.364z"
+              />
+            </svg>
+          </a>
+
+          <!-- Google Maps -->
+          <a
+            href="https://maps.app.goo.gl/UHDqJZJrjT5u4d469"
+            aria-label="Maps"
+            target="_blank"
+          >
+            <?xml version="1.0" encoding="UTF-8" standalone="no"?>
+            <svg class="h-6 w-6" viewBox="-4 0 32 32" version="1.1">
+              <title>Ubicacion</title>
+              <g
+                id="Page-1"
+                stroke="none"
+                stroke-width="1"
+                fill="none"
+                fill-rule="evenodd"
+                sketch:type="MSPage"
+              >
+                <g
+                  id="Icon-Set"
+                  sketch:type="MSLayerGroup"
+                  transform="translate(-104.000000, -411.000000)"
+                  fill="orange"
+                >
+                  <path
+                    d="M116,426 C114.343,426 113,424.657 113,423 C113,421.343 114.343,420 116,420 C117.657,420 119,421.343 119,423 C119,424.657 117.657,426 116,426 L116,426 Z M116,418 C113.239,418 111,420.238 111,423 C111,425.762 113.239,428 116,428 C118.761,428 121,425.762 121,423 C121,420.238 118.761,418 116,418 L116,418 Z M116,440 C114.337,440.009 106,427.181 106,423 C106,417.478 110.477,413 116,413 C121.523,413 126,417.478 126,423 C126,427.125 117.637,440.009 116,440 L116,440 Z M116,411 C109.373,411 104,416.373 104,423 C104,428.018 114.005,443.011 116,443 C117.964,443.011 128,427.95 128,423 C128,416.373 122.627,411 116,411 L116,411 Z"
+                    id="location"
+                    sketch:type="MSShapeGroup"
+                  ></path>
+                </g>
+              </g>
+            </svg>
+          </a>
+
+          <!-- Phone -->
+          <a href="tel:+50496507838" target="_blank">
+            <?xml version="1.0" encoding="utf-8"?>
+            <svg
+              class="h-6 w-6"
+              viewBox="0 0 24 24"
+              fill="orange"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <title>Celular</title>
+              <path
+                d="M16.1007 13.359L15.5719 12.8272H15.5719L16.1007 13.359ZM16.5562 12.9062L17.085 13.438H17.085L16.5562 12.9062ZM18.9728 12.5894L18.6146 13.2483L18.9728 12.5894ZM20.8833 13.628L20.5251 14.2869L20.8833 13.628ZM21.4217 16.883L21.9505 17.4148L21.4217 16.883ZM20.0011 18.2954L19.4723 17.7636L20.0011 18.2954ZM18.6763 18.9651L18.7459 19.7119H18.7459L18.6763 18.9651ZM8.81536 14.7266L9.34418 14.1947L8.81536 14.7266ZM4.00289 5.74561L3.2541 5.78816L3.2541 5.78816L4.00289 5.74561ZM10.4775 7.19738L11.0063 7.72922H11.0063L10.4775 7.19738ZM10.6342 4.54348L11.2346 4.09401L10.6342 4.54348ZM9.37326 2.85908L8.77286 3.30855V3.30855L9.37326 2.85908ZM6.26145 2.57483L6.79027 3.10667H6.79027L6.26145 2.57483ZM4.69185 4.13552L4.16303 3.60368H4.16303L4.69185 4.13552ZM12.0631 11.4972L12.5919 10.9654L12.0631 11.4972ZM16.6295 13.8909L17.085 13.438L16.0273 12.3743L15.5719 12.8272L16.6295 13.8909ZM18.6146 13.2483L20.5251 14.2869L21.2415 12.9691L19.331 11.9305L18.6146 13.2483ZM20.8929 16.3511L19.4723 17.7636L20.5299 18.8273L21.9505 17.4148L20.8929 16.3511ZM18.6067 18.2184C17.1568 18.3535 13.4056 18.2331 9.34418 14.1947L8.28654 15.2584C12.7186 19.6653 16.9369 19.8805 18.7459 19.7119L18.6067 18.2184ZM9.34418 14.1947C5.4728 10.3453 4.83151 7.10765 4.75168 5.70305L3.2541 5.78816C3.35456 7.55599 4.14863 11.144 8.28654 15.2584L9.34418 14.1947ZM10.7195 8.01441L11.0063 7.72922L9.9487 6.66555L9.66189 6.95073L10.7195 8.01441ZM11.2346 4.09401L9.97365 2.40961L8.77286 3.30855L10.0338 4.99296L11.2346 4.09401ZM5.73263 2.04299L4.16303 3.60368L5.22067 4.66736L6.79027 3.10667L5.73263 2.04299ZM10.1907 7.48257C9.66189 6.95073 9.66117 6.95144 9.66045 6.95216C9.66021 6.9524 9.65949 6.95313 9.659 6.95362C9.65802 6.95461 9.65702 6.95561 9.65601 6.95664C9.65398 6.95871 9.65188 6.96086 9.64972 6.9631C9.64539 6.96759 9.64081 6.97245 9.63599 6.97769C9.62634 6.98816 9.61575 7.00014 9.60441 7.01367C9.58174 7.04072 9.55605 7.07403 9.52905 7.11388C9.47492 7.19377 9.41594 7.2994 9.36589 7.43224C9.26376 7.70329 9.20901 8.0606 9.27765 8.50305C9.41189 9.36833 10.0078 10.5113 11.5343 12.0291L12.5919 10.9654C11.1634 9.54499 10.8231 8.68059 10.7599 8.27309C10.7298 8.07916 10.761 7.98371 10.7696 7.96111C10.7748 7.94713 10.7773 7.9457 10.7709 7.95525C10.7677 7.95992 10.7624 7.96723 10.7541 7.97708C10.75 7.98201 10.7451 7.98759 10.7394 7.99381C10.7365 7.99692 10.7335 8.00019 10.7301 8.00362C10.7285 8.00534 10.7268 8.00709 10.725 8.00889C10.7241 8.00979 10.7232 8.0107 10.7223 8.01162C10.7219 8.01208 10.7212 8.01278 10.7209 8.01301C10.7202 8.01371 10.7195 8.01441 10.1907 7.48257ZM11.5343 12.0291C13.0613 13.5474 14.2096 14.1383 15.0763 14.2713C15.5192 14.3392 15.8763 14.285 16.1472 14.1841C16.28 14.1346 16.3858 14.0763 16.4658 14.0227C16.5058 13.9959 16.5392 13.9704 16.5663 13.9479C16.5799 13.9367 16.5919 13.9262 16.6024 13.9166C16.6077 13.9118 16.6126 13.9073 16.6171 13.903C16.6194 13.9008 16.6215 13.8987 16.6236 13.8967C16.6246 13.8957 16.6256 13.8947 16.6266 13.8937C16.6271 13.8932 16.6279 13.8925 16.6281 13.8923C16.6288 13.8916 16.6295 13.8909 16.1007 13.359C15.5719 12.8272 15.5726 12.8265 15.5733 12.8258C15.5735 12.8256 15.5742 12.8249 15.5747 12.8244C15.5756 12.8235 15.5765 12.8226 15.5774 12.8217C15.5793 12.82 15.581 12.8183 15.5827 12.8166C15.5862 12.8133 15.5895 12.8103 15.5926 12.8074C15.5988 12.8018 15.6044 12.7969 15.6094 12.7929C15.6192 12.7847 15.6265 12.7795 15.631 12.7764C15.6403 12.7702 15.6384 12.773 15.6236 12.7785C15.5991 12.7876 15.501 12.8189 15.3038 12.7886C14.8905 12.7253 14.02 12.3853 12.5919 10.9654L11.5343 12.0291ZM9.97365 2.40961C8.95434 1.04802 6.94996 0.83257 5.73263 2.04299L6.79027 3.10667C7.32195 2.578 8.26623 2.63181 8.77286 3.30855L9.97365 2.40961ZM4.75168 5.70305C4.73201 5.35694 4.89075 4.9954 5.22067 4.66736L4.16303 3.60368C3.62571 4.13795 3.20329 4.89425 3.2541 5.78816L4.75168 5.70305ZM19.4723 17.7636C19.1975 18.0369 18.9029 18.1908 18.6067 18.2184L18.7459 19.7119C19.4805 19.6434 20.0824 19.2723 20.5299 18.8273L19.4723 17.7636ZM11.0063 7.72922C11.9908 6.7503 12.064 5.2019 11.2346 4.09401L10.0338 4.99295C10.4373 5.53193 10.3773 6.23938 9.9487 6.66555L11.0063 7.72922ZM20.5251 14.2869C21.3429 14.7315 21.4703 15.7769 20.8929 16.3511L21.9505 17.4148C23.2908 16.0821 22.8775 13.8584 21.2415 12.9691L20.5251 14.2869ZM17.085 13.438C17.469 13.0562 18.0871 12.9616 18.6146 13.2483L19.331 11.9305C18.2474 11.3414 16.9026 11.5041 16.0273 12.3743L17.085 13.438Z"
+                fill="orange"
+              />
+            </svg>
+          </a>
+
+          <!-- Mail -->
+          <a href="mailto:contact@conexionjuvenil.org" target="_blank">
+            <?xml version="1.0" encoding="utf-8"?><!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
+            <svg
+              class="h-6 w-6"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <title>Correo</title>
+              <path
+                d="M4 19L9 14M20 19L15 14M3.02832 10L10.2246 14.8166C10.8661 15.2443 11.1869 15.4581 11.5336 15.5412C11.8399 15.6146 12.1593 15.6146 12.4657 15.5412C12.8124 15.4581 13.1332 15.2443 13.7747 14.8166L20.971 10M10.2981 4.06879L4.49814 7.71127C3.95121 8.05474 3.67775 8.22648 3.4794 8.45864C3.30385 8.66412 3.17176 8.90305 3.09111 9.161C3 9.45244 3 9.77535 3 10.4212V16.8C3 17.9201 3 18.4802 3.21799 18.908C3.40973 19.2843 3.71569 19.5903 4.09202 19.782C4.51984 20 5.0799 20 6.2 20H17.8C18.9201 20 19.4802 20 19.908 19.782C20.2843 19.5903 20.5903 19.2843 20.782 18.908C21 18.4802 21 17.9201 21 16.8V10.4212C21 9.77535 21 9.45244 20.9089 9.161C20.8282 8.90305 20.6962 8.66412 20.5206 8.45864C20.3223 8.22648 20.0488 8.05474 19.5019 7.71127L13.7019 4.06879C13.0846 3.68116 12.776 3.48735 12.4449 3.4118C12.152 3.34499 11.848 3.34499 11.5551 3.4118C11.224 3.48735 10.9154 3.68116 10.2981 4.06879Z"
+                stroke="orange"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </a>
+        </div>
+        <p class="text-sm text-gray-500 dark:text-gray-400">
+          &copy; 2025 Conexion Juvenil. Derechos reservados.
+        </p>
+      </div>
+    </footer>
+
+    <!-- Carousel JS -->
+    <script>
+      function carousel() {
+        return {
+          currentIndex: 0,
+          images: ["./images/on1.jpg", "./images/g6.jpg",  "./images/on4.jpg" , "./images/g11.jpg", "./images/g12.jpg"],
+          start() {
+            setInterval(() => {
+              this.currentIndex = (this.currentIndex + 1) % this.images.length;
+            }, 3000);
+          },
+        };
+      }
+
+      function scrollSpy() {
+        return {
+          activeSection: "",
+          links: [
+            { id: "Inicio", label: "Inicio" },
+            { id: "Nosotros", label: "Nosotros" },
+            { id: "Galeria", label: "Galeria" },
+            { id: "Donaciones", label: "Donaciones" },
+            { id: "Visitanos", label: "Visitanos" },
+          ],
+          init() {
+            this.onScroll(); // set on load
+          },
+          onScroll() {
+            const buffer = 100; // adjust to trigger earlier/later
+            for (const link of this.links) {
+              const section = document.getElementById(link.id);
+              if (section) {
+                const rect = section.getBoundingClientRect();
+                if (rect.top <= buffer && rect.bottom > buffer) {
+                  this.activeSection = link.id;
+                  break;
+                }
+              }
+            }
+          },
+        };
+      }
+    </script>
+  </body>
+</html>

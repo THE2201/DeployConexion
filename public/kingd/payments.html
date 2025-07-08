@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pagos</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body
+    class="bg-gray-100 dark:bg-neutral-900 p-8 text-gray-900 dark:text-white"
+  >
+    <div class="flex items-center justify-between mb-4">
+      <h1 class="text-2xl font-bold mb-4 text-center">Pagos recibidos</h1>
+      <a
+        href="dboard.html"
+        class="ml-4 bg-orange-500 hover:bg-orange-600 text-white p-4 rounded shadow"
+      >
+        <svg
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="1.5"
+          stroke="currentColor"
+          class="size-6"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M9 15 3 9m0 0 6-6M3 9h12a6 6 0 0 1 0 12h-3"
+          />
+        </svg>
+      </a>
+    </div>
+    <input
+      type="text"
+      id="searchInput"
+      placeholder="Buscar por nombre o teléfono..."
+      class="dark:text-black mb-4 w-full p-2 border border-gray-300 dark:border-gray-600 rounded focus:outline-none focus:ring-2 focus:ring-orange-500"
+    />
+
+    <div class="overflow-x-auto p-6">
+      <table
+        id="paymentsTable"
+        class="min-w-full table-auto border border-gray-400 dark:border-gray-600"
+      >
+        <thead class="bg-gray-200 dark:bg-gray-700">
+          <tr>
+            <th class="px-4 py-2">Nombre</th>
+            <th class="px-4 py-2">Pendiente</th>
+            <th class="px-4 py-2">Ult. modificado</th>
+            <th class="px-4 py-2">Opciones</th>
+          </tr>
+        </thead>
+        <tbody id="paymentsBody" class="bg-white dark:bg-gray-800">
+          <tr>
+            <td colspan="8" class="text-center p-4">Cargando...</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <script>
+      let allData = [];
+
+      async function loadPayments() {
+        try {
+          const res = await fetch("../../api/get_payments.php", {
+            credentials: "include",
+          });
+
+          const text = await res.text();
+          try {
+            allData = JSON.parse(text);
+          } catch {
+            document.getElementById(
+              "paymentsBody"
+            ).innerHTML = `<tr><td colspan="8" class="text-red-500 p-4">Error cargando datos</td></tr>`;
+            console.error("Invalid JSON:", text);
+            return;
+          }
+
+          renderTable(allData);
+        } catch (err) {
+          console.error("Fetch failed:", err);
+          document.getElementById(
+            "paymentsBody"
+          ).innerHTML = `<tr><td colspan="8" class="text-red-500 p-4">Error de red</td></tr>`;
+        }
+      }
+
+      function renderTable(data) {
+        const tbody = document.getElementById("paymentsBody");
+        if (!Array.isArray(data) || data.length === 0) {
+          tbody.innerHTML = `<tr><td colspan="8" class="text-center p-4">No hay inscripciones.</td></tr>`;
+          return;
+        }
+
+        tbody.innerHTML = data
+          .map(
+            (row) => `
+        <tr>
+          <td class="border px-4 py-2">${row.name}</td>
+          <td class="border px-4 py-2">${row.balance}</td>
+          <td class="border px-4 py-2">${row.updated_at}</td>
+          <td class="border px-4 py-2">
+            <div class="flex items-center gap-2">
+                <button 
+                class="bg-blue-500 hover:bg-blue-600 text-white p-1 rounded"
+                onclick="handleUpdate('${row.idenrolled}')"
+                title="Abonar"
+                >
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                </svg>
+                </button>
+
+                <button 
+                class="bg-green-500 hover:bg-green-600 text-white p-1 rounded"
+                onclick="handlePayoff('${row.idenrolled}')"
+                title="Definir Monto"
+                >
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
+                </svg>
+                </button>
+            </div>
+            </td>
+        </tr>
+      `
+          )
+          .join("");
+      }
+
+      document.getElementById("searchInput").addEventListener("input", (e) => {
+        const query = e.target.value.toLowerCase();
+
+        const filtered = allData.filter((row) =>
+          row.name.toLowerCase().includes(query)
+        );
+
+        renderTable(filtered);
+      });
+
+      window.onload = loadPayments;
+    </script>
+
+    <script>
+      function handleUpdate(id) {
+        const amount = prompt(`Abonar para ID: ${id}`);
+
+        if (!amount || isNaN(amount) || parseFloat(amount) <= 0) {
+          alert("Por favor, introduce un monto válido.");
+          return;
+        }
+
+        fetch("../../api/update_payment.php", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify({
+            id,
+            amount: parseFloat(amount),
+          }),
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            if (data.success) {
+              alert("Pago actualizado exitosamente.");
+              loadPayments(); // Refresh table
+            } else {
+              alert("Error: " + data.message);
+            }
+          })
+          .catch((err) => {
+            console.error("Error updating payment:", err);
+            alert("Error en la red o en el servidor.");
+          });
+      }
+
+      function handlePayoff(id) {
+        const newAmount = prompt(
+          `Definir nuevo monto total pendiente para ID: ${id}`
+        );
+
+        if (!newAmount || isNaN(newAmount) || parseFloat(newAmount) < 0) {
+          alert("Por favor, introduce un monto válido.");
+          return;
+        }
+
+        fetch("../../api/set_payoff.php", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify({
+            id,
+            amount: parseFloat(newAmount),
+          }),
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            if (data.success) {
+              alert("Monto pendiente actualizado.");
+              loadPayments(); // Refresh table
+            } else {
+              alert("Error: " + data.message);
+            }
+          })
+          .catch((err) => {
+            console.error("Error updating payoff:", err);
+            alert("Error en la red o en el servidor.");
+          });
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Inscripciones</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body
+    class="bg-gray-100 dark:bg-neutral-900 p-8 text-gray-900 dark:text-white"
+  >
+    <div class="flex items-center justify-between mb-4">
+      <h1 class="text-2xl font-bold text-center flex-1">
+        Lista de Inscripciones
+      </h1>
+      <a
+        href="dboard.html"
+        class="ml-4 bg-orange-500 hover:bg-orange-600 text-white p-4 rounded shadow"
+      >
+        <svg
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="1.5"
+          stroke="currentColor"
+          class="size-6"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M9 15 3 9m0 0 6-6M3 9h12a6 6 0 0 1 0 12h-3"
+          />
+        </svg>
+      </a>
+    </div>
+
+    <input
+      type="text"
+      id="searchInput"
+      placeholder="Buscar por nombre o teléfono..."
+      class="dark:text-black mb-4 w-full p-2 border border-gray-300 dark:border-gray-600 rounded focus:outline-none focus:ring-2 focus:ring-orange-500"
+    />
+
+    <div class="overflow-x-auto p-6">
+      <table
+        id="enrollmentsTable"
+        class="min-w-full table-auto border border-gray-400 dark:border-gray-600"
+      >
+        <thead class="bg-gray-200 dark:bg-gray-700">
+          <tr>
+            <th class="px-4 py-2">ID</th>
+            <th class="px-4 py-2">Nombre</th>
+            <th class="px-4 py-2">Teléfono</th>
+            <th class="px-4 py-2">Nacimiento</th>
+            <th class="px-4 py-2">Alergias</th>
+            <th class="px-4 py-2">Encargado</th>
+            <th class="px-4 py-2">Tel. Padre</th>
+            <th class="px-4 py-2">Parentesco</th>
+          </tr>
+        </thead>
+        <tbody id="enrollmentsBody" class="bg-white dark:bg-gray-800">
+          <tr>
+            <td colspan="8" class="text-center p-4">Cargando...</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <script>
+      let allData = [];
+
+      async function loadEnrollments() {
+        try {
+          const res = await fetch("../../api/get_enrollments.php", {
+            credentials: "include",
+          });
+
+          const text = await res.text();
+          try {
+            allData = JSON.parse(text);
+          } catch {
+            document.getElementById(
+              "enrollmentsBody"
+            ).innerHTML = `<tr><td colspan="8" class="text-red-500 p-4">Error cargando datos</td></tr>`;
+            console.error("Invalid JSON:", text);
+            return;
+          }
+
+          renderTable(allData);
+        } catch (err) {
+          console.error("Fetch failed:", err);
+          document.getElementById(
+            "enrollmentsBody"
+          ).innerHTML = `<tr><td colspan="8" class="text-red-500 p-4">Error de red</td></tr>`;
+        }
+      }
+
+      function renderTable(data) {
+        const tbody = document.getElementById("enrollmentsBody");
+        if (!Array.isArray(data) || data.length === 0) {
+          tbody.innerHTML = `<tr><td colspan="8" class="text-center p-4">No hay inscripciones.</td></tr>`;
+          return;
+        }
+
+        tbody.innerHTML = data
+          .map(
+            (row) => `
+      <tr>
+        <td class="border px-4 py-2">${row.idenrolled}</td>
+        <td class="border px-4 py-2">${row.name}</td>
+        <td class="border px-4 py-2">${row.phone}</td>
+        <td class="border px-4 py-2">${row.dob}</td>
+        <td class="border px-4 py-2">${row.allergies}</td>
+        <td class="border px-4 py-2">${row.parent}</td>
+        <td class="border px-4 py-2">${row.nparent}</td>
+        <td class="border px-4 py-2">${row.parenting}</td>
+      </tr>
+    `
+          )
+          .join("");
+      }
+
+      document.getElementById("searchInput").addEventListener("input", (e) => {
+        const query = e.target.value.toLowerCase();
+
+        const filtered = allData.filter(
+          (row) =>
+            row.name.toLowerCase().includes(query) ||
+            row.phone.toLowerCase().includes(query)
+        );
+
+        renderTable(filtered);
+      });
+
+      window.onload = loadEnrollments;
+    </script>
+  </body>
+</html>
